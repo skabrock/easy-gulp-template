@@ -1,0 +1,17 @@
+html,body
+  font-size: 16px
+
+body
+  font-family: $ms
+  font-weight: 300
+  color: $black
+
+*, *:before, *:after
+  box-sizing: border-box
+
+a, button, input, select, textarea, [contenteditable="true"], [tabindex]
+  color: $black
+  outline: none
+  &:focus
+    +placeholder
+      opacity: 0
