@@ -1,10 +1,8 @@
-Gulp & Bower Start KIT
-=============================
+# Gulp & Bower Start KIT
 
 This is a starting from scratch template for your project in Dowell company.
 
-QUICK START
-------------
+## QUICK START
 
 Clone repository to your local machine
 
@@ -26,7 +24,7 @@ Go to bower.json file and change ProjectName and "author <mail@mail.com>" string
 
 All your source files located in assets directory by default.
 
-Run:
+Run to build application:
 
       gulp
 
@@ -37,8 +35,7 @@ Open **index.html** file to make sure everything is alright
 Enjoy!
 
 
-COMMANDS
------------
+## COMMANDS
 
 All build commands:
 
@@ -75,9 +72,11 @@ Main function which builds and watches all your assets. In most you need only th
       gulp
 
 
-NOTICE
------------
+### NOTICE
 
 * If you want to use html instead/with slim, just create **html** folder inside your assets.
 * Use **@** as first symbol in js/coffee and css/sass/scss files for choosing only files you want to be compiled.
 * Use **@** for mark your custom font folder.
+
+
+Designed in [Dowell](http://dowell.com.ua).
