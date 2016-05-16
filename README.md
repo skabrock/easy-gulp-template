@@ -20,11 +20,9 @@ Install packages:
       npm install
 
 
-Go to package.json file and change ProjectName
-Go to bower.json file and change ProjectName and "author <mail@mail.com>" string
+Go to package.json file and change ProjectName.
 
-WHAT'S NEXT
------------
+Go to bower.json file and change ProjectName and "author <mail@mail.com>" string.
 
 All your source files located in assets directory by default.
 
@@ -35,6 +33,9 @@ Run:
 You can see 'build/' directory in the root of your project.
 
 Open **index.html** file to make sure everything is alright
+
+Enjoy!
+
 
 COMMANDS
 -----------
