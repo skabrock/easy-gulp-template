@@ -77,4 +77,6 @@ Main function which builds and watches all your assets. In most you need only th
 NOTICE
 -----------
 
-If you want to use html instead/with slim, just create **html** folder inside your assets.
+* If you want to use html instead/with slim, just create **html** folder inside your assets.
+* Use **@** as first symbol in js/coffee and css/sass/scss files for choosing only files you want to be compiled.
+* Use **@** for mark your custom font folder.
