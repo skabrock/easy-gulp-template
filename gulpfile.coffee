@@ -50,9 +50,11 @@ path =
     fonts: cooked + 'fonts'
     img: cooked + 'img'
     favicon: './'
+  favicon:
+    data_file: 'faviconData.json'
+    files: ['./android-chrome-144x144.png', './android-chrome-192x192.png', './android-chrome-36x36.png', './android-chrome-48x48.png', './android-chrome-72x72.png', './android-chrome-96x96.png', './apple-touch-icon-114x114.png', './apple-touch-icon-120x120.png', './apple-touch-icon-144x144.png', './apple-touch-icon-152x152.png', './apple-touch-icon-180x180.png', './apple-touch-icon-57x57.png', './apple-touch-icon-60x60.png', './apple-touch-icon-72x72.png', './apple-touch-icon-76x76.png', './apple-touch-icon-precomposed.png', './apple-touch-icon.png', './assetimfavicon.svg', './browserconfig.xml', './favicon-16x16.png', './favicon-194x194.png', './favicon-32x32.png', './favicon-96x96.png', './favicon.ico', './faviconData.json', './manifest.json', './mstile-144x144.png', './mstile-150x150.png', './mstile-310x150.png', './mstile-310x310.png', './mstile-70x70.png', './safari-pinned-tab.svg']
+    inject: cooked + '/index.html'
   clean: cooked
-  favicon_data_file: 'faviconData.json'
-  favicon_files: ['./android-chrome-144x144.png', './android-chrome-192x192.png', './android-chrome-36x36.png', './android-chrome-48x48.png', './android-chrome-72x72.png', './android-chrome-96x96.png', './apple-touch-icon-114x114.png', './apple-touch-icon-120x120.png', './apple-touch-icon-144x144.png', './apple-touch-icon-152x152.png', './apple-touch-icon-180x180.png', './apple-touch-icon-57x57.png', './apple-touch-icon-60x60.png', './apple-touch-icon-72x72.png', './apple-touch-icon-76x76.png', './apple-touch-icon-precomposed.png', './apple-touch-icon.png', './assetimfavicon.svg', './browserconfig.xml', './favicon-16x16.png', './favicon-194x194.png', './favicon-32x32.png', './favicon-96x96.png', './favicon.ico', './faviconData.json', './manifest.json', './mstile-144x144.png', './mstile-150x150.png', './mstile-310x150.png', './mstile-310x310.png', './mstile-70x70.png', './safari-pinned-tab.svg']
 
 gulp.task 'slim:build', ->
   return gulp.src path.src.slim
@@ -135,9 +137,6 @@ gulp.task 'img:build', ->
 gulp.task 'clean', ->
   return del path.clean
 
-gulp.task 'clean-favicon', ->
-  return del path.favicon_files
-
 gulp.task 'lr:listen', ->
   livereload.listen()
 
@@ -196,6 +195,14 @@ gulp.task 'generate-favicon', (done) ->
       compression: 2
       scalingAlgorithm: 'Mitchell'
       errorOnImageTooSmall: false
-    markupFile: path.favicon_data_file
+    markupFile: path.favicon.data_file
   }, ->
     done()
+
+gulp.task 'inject-favicon-markups', ->
+  return gulp.src path.favicon.inject
+    .pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(path.favicon.data_file)).favicon.html_code))
+    .pipe gulp.dest(path.build.html)
+
+gulp.task 'clean-favicon', ->
+  return del path.favicon.files
