@@ -15,12 +15,13 @@ uglify = require('gulp-uglify')
 cssnano = require('gulp-cssnano')
 babel = require('gulp-babel')
 livereload = require('gulp-livereload')
-rimraf = require('rimraf')
+del = require('del')
 iconfont = require('gulp-iconfont')
 imagemin = require('gulp-imagemin')
 pngquant = require('imagemin-pngquant')
 rename = require('gulp-rename')
 fs = require('fs')
+realFavicon = require ('gulp-real-favicon')
 
 path =
   src:
@@ -31,7 +32,8 @@ path =
     coffee: raw + 'javascripts/**/@*.coffee'
     fonts: [raw + 'fonts/**/*.{eot,ttf,woff,woff2,svg}', '!' + raw + 'fonts/@*/*.svg']
     iconfont: raw + 'fonts/@*/*.{eot,ttf,woff,woff2,svg}'
-    img: raw + 'img/**/*.{jpg,png,gif,svg}'
+    img: [raw + 'img/**/*.{jpg,png,gif,svg}', '!' + raw + 'img/favicon.{jpg,png,gif,svg}']
+    favicon: raw + 'img/favicon.svg'
   watch:
     slim: raw + 'slim/**/*.slim'
     html: raw + 'html/**/*.html'
@@ -40,15 +42,17 @@ path =
     coffee: raw + 'javascripts/**/*.coffee'
     fonts:  raw + 'fonts/**/*.{eot,ttf,woff,woff2,svg}'
     iconfont: raw + 'fonts/@*/*.{eot,ttf,woff,woff2,svg}'
-    img:  raw + 'img/**/*.{jpg,png,gif,svg}'
+    img:  [raw + 'img/**/*.{jpg,png,gif,svg}', '!' + raw + 'img/favicon.{jpg,png,gif,svg}']
   build:
     html: cooked
     styles: cooked
     js: cooked
     fonts: cooked + 'fonts'
     img: cooked + 'img'
+    favicon: './'
   clean: cooked
-
+  favicon_data_file: 'faviconData.json'
+  favicon_files: ['./android-chrome-144x144.png', './android-chrome-192x192.png', './android-chrome-36x36.png', './android-chrome-48x48.png', './android-chrome-72x72.png', './android-chrome-96x96.png', './apple-touch-icon-114x114.png', './apple-touch-icon-120x120.png', './apple-touch-icon-144x144.png', './apple-touch-icon-152x152.png', './apple-touch-icon-180x180.png', './apple-touch-icon-57x57.png', './apple-touch-icon-60x60.png', './apple-touch-icon-72x72.png', './apple-touch-icon-76x76.png', './apple-touch-icon-precomposed.png', './apple-touch-icon.png', './assetimfavicon.svg', './browserconfig.xml', './favicon-16x16.png', './favicon-194x194.png', './favicon-32x32.png', './favicon-96x96.png', './favicon.ico', './faviconData.json', './manifest.json', './mstile-144x144.png', './mstile-150x150.png', './mstile-310x150.png', './mstile-310x310.png', './mstile-70x70.png', './safari-pinned-tab.svg']
 
 gulp.task 'slim:build', ->
   return gulp.src path.src.slim
@@ -128,8 +132,11 @@ gulp.task 'img:build', ->
     .pipe gulp.dest(path.build.img)
     .pipe livereload()
 
-gulp.task 'clean', (cb)->
-  return rimraf path.clean, cb
+gulp.task 'clean', ->
+  return del path.clean
+
+gulp.task 'clean-favicon', ->
+  return del path.favicon_files
 
 gulp.task 'lr:listen', ->
   livereload.listen()
@@ -155,3 +162,40 @@ gulp.task 'build', [
 gulp.task 'refresh', ['clean', 'build']
 
 gulp.task 'default', ['lr:listen', 'build', 'watch']
+
+gulp.task 'generate-favicon', (done) ->
+  realFavicon.generateFavicon {
+    masterPicture: path.src.favicon
+    dest: path.build.favicon
+    iconsPath: '/'
+    design:
+      ios:
+        pictureAspect: 'backgroundAndMargin'
+        backgroundColor: '#ffffff'
+        margin: '25%'
+      desktopBrowser: {}
+      windows:
+        pictureAspect: 'whiteSilhouette'
+        backgroundColor: '#2d89ef'
+        onConflict: 'override'
+      androidChrome:
+        pictureAspect: 'backgroundAndMargin'
+        margin: '23%'
+        backgroundColor: '#ffffff'
+        themeColor: '#ffffff'
+        manifest:
+          name: 'gulp template'
+          display: 'browser'
+          orientation: 'notSet'
+          onConflict: 'override'
+          declared: true
+      safariPinnedTab:
+        pictureAspect: 'silhouette'
+        themeColor: '#404040'
+    settings:
+      compression: 2
+      scalingAlgorithm: 'Mitchell'
+      errorOnImageTooSmall: false
+    markupFile: path.favicon_data_file
+  }, ->
+    done()

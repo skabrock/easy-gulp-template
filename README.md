@@ -59,6 +59,14 @@ Remove generated folder with files inside:
 
       gulp clean
 
+Generate favicon files for various devises from source file **assets/img/favicon.svg**
+
+      gulp generate-favicon
+
+Remove all favicon generated files
+
+      gulp clean-favicon
+
 The same as the build command but delete generated folder at first:
 
       gulp refresh
