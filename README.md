@@ -87,4 +87,6 @@ Main function which builds and watches all your assets. In most you need only th
 * Use **@** for mark your custom font folder.
 
 
+**Check out [GitHub repo](https://github.com/skabrock/easy-gulp-template "simple-gulp-template") for getting fresh version**
+
 Designed in [Dowell](http://dowell.com.ua).
