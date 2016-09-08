@@ -72,7 +72,7 @@ gulp.task 'html:build', ->
 gulp.task 'styles:build', ->
   return gulp.src path.src.styles
     .pipe sass().on('error', gutil.log)
-    .pipe cssnano()
+    .pipe cssnano({zindex: false})
     .pipe rename (path)->
       if path.basename[0] == '@'
         path.basename = path.basename.slice(1)
